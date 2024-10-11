@@ -7,9 +7,9 @@ BUILDCOMMIT=$(shell git rev-parse --short HEAD)
 BUILDOS=$(shell go env GOOS)
 BUILDARCH=$(shell go env GOARCH)
 
-PROJECT=codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye
+PROJECT=github.com/EscapeBearSecond/eagleeye
 
-go build  -ldflags="-w -s -X 'codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/curescan/server/core/meta.BuildVer=$(cat version.ini)'" -o curescan .
+go build  -ldflags="-w -s -X 'github.com/EscapeBearSecond/curescan/server/core/meta.BuildVer=$(cat version.ini)'" -o curescan .
 
 LDFLAGS=-w -s -X '${PROJECT}/internal/meta.BuildOS=${BUILDOS}' -X '${PROJECT}/internal/meta.BuildArch=${BUILDARCH}' -X '${PROJECT}/internal/meta.BuildCommit=${BUILDCOMMIT}' -X '${PROJECT}/internal/meta.BuildBranch=${BUILDBRANCH}' -X '${PROJECT}/internal/meta.BuildVer=${BUILDVERSION}' -X '${PROJECT}/internal/meta.BuildTime=${BUILDTIME}' -X '${PROJECT}/internal/meta.BuildUser=${BUILDUSER}' -X '${PROJECT}/internal/meta.BuildHost=${BUILDHOST}'
 

@@ -3,7 +3,7 @@ package license
 import (
 	"io"
 
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/license"
+	"github.com/EscapeBearSecond/eagleeye/internal/license"
 )
 
 type Watcher license.Watcher

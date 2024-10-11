@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/export"
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/pkg/report"
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/pkg/types"
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/pkg/util"
+	"github.com/EscapeBearSecond/eagleeye/internal/export"
+	"github.com/EscapeBearSecond/eagleeye/pkg/report"
+	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/eagleeye/pkg/util"
 	"github.com/rs/xid"
 	"github.com/spf13/cobra"
 )

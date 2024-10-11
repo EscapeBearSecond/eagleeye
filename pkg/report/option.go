@@ -1,7 +1,7 @@
 package report
 
 import (
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/eagleeye/pkg/types"
 )
 
 type options struct {

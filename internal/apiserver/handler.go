@@ -1,7 +1,7 @@
 package apiserver
 
 import (
-	_ "codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/docs"
+	_ "github.com/EscapeBearSecond/eagleeye/docs"
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )

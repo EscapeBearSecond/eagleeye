@@ -3,8 +3,8 @@ package job
 import (
 	"sync"
 
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/global"
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/eagleeye/internal/global"
+	"github.com/EscapeBearSecond/eagleeye/pkg/types"
 )
 
 // resultPool 结果对象池

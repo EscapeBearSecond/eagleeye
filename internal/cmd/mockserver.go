@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/mockserver"
+	"github.com/EscapeBearSecond/eagleeye/internal/mockserver"
 	"github.com/spf13/cobra"
 )
 

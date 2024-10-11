@@ -1,9 +1,9 @@
 package engine
 
 import (
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/job"
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/scanner"
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/stage"
+	"github.com/EscapeBearSecond/eagleeye/internal/job"
+	"github.com/EscapeBearSecond/eagleeye/internal/scanner"
+	"github.com/EscapeBearSecond/eagleeye/internal/stage"
 )
 
 type Option func(*Engine)

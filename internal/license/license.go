@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/util"
-	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/util/sign"
+	"github.com/EscapeBearSecond/eagleeye/internal/util"
+	"github.com/EscapeBearSecond/eagleeye/internal/util/sign"
 	"github.com/jinzhu/copier"
 	"github.com/rs/xid"
 	"github.com/samber/lo"
