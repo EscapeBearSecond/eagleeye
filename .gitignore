@@ -1,0 +1,16 @@
+.DS_Store
+.vscode/
+templates/
+/eagleeye*
+*.csv
+*.txt
+*.out
+__debug*
+*.xlsx
+*.png
+results/
+license.json
+report_template/
+*.docx
+reports/
+helpers/

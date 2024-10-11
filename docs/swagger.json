@@ -1,0 +1,559 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is the API documentation for EagleEye.",
+        "title": "EagleEye API",
+        "contact": {},
+        "version": "0.2.0"
+    },
+    "host": "127.0.0.1:9527",
+    "basePath": "/api/v1",
+    "paths": {
+        "/plan": {
+            "post": {
+                "description": "创建计划",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plans"
+                ],
+                "summary": "创建计划",
+                "parameters": [
+                    {
+                        "description": "计划",
+                        "name": "plan",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.CreatePlanRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.CreatePlanReplay"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.status"
+                        }
+                    }
+                }
+            }
+        },
+        "/plan/running": {
+            "get": {
+                "description": "获取运行中的计划",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plans"
+                ],
+                "summary": "获取运行中的计划",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.RunningPlansReplay"
+                        }
+                    }
+                }
+            }
+        },
+        "/plan/stopped": {
+            "get": {
+                "description": "获取已停止的计划",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plans"
+                ],
+                "summary": "获取已停止的计划",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.StoppedPlansReplay"
+                        }
+                    }
+                }
+            }
+        },
+        "/plan/{plan_id}": {
+            "post": {
+                "description": "重启计划",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plans"
+                ],
+                "summary": "重启计划",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "计划ID",
+                        "name": "plan_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.RestartPlanReplay"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.status"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.status"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "停止计划",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plans"
+                ],
+                "summary": "停止计划",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "计划ID",
+                        "name": "plan_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.StopPlanReplay"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.status"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.status"
+                        }
+                    }
+                }
+            }
+        },
+        "/plan/{plan_id}/results": {
+            "get": {
+                "description": "获取计划结果",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plans"
+                ],
+                "summary": "获取计划结果",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "计划ID",
+                        "name": "plan_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.GetPlanResultsReplay"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.status"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/apiserver.status"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "apiserver.CreatePlanReplay": {
+            "type": "object",
+            "properties": {
+                "plan_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiserver.CreatePlanRequest": {
+            "type": "object",
+            "required": [
+                "host_discovery",
+                "port_scanning"
+            ],
+            "properties": {
+                "host_discovery": {
+                    "description": "在线检测",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.HostDiscoveryOptions"
+                        }
+                    ]
+                },
+                "jobs": {
+                    "description": "任务",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.JobOptions"
+                    }
+                },
+                "port_scanning": {
+                    "description": "端口扫描",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.PortScanningOptions"
+                        }
+                    ]
+                },
+                "targets": {
+                    "description": "目标",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "apiserver.GetPlanResultsReplay": {
+            "type": "object",
+            "properties": {
+                "host_discovery": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.PingResult"
+                    }
+                },
+                "job_results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apiserver.GetPlanResultsReplay_JobResult"
+                    }
+                },
+                "plan_id": {
+                    "type": "string"
+                },
+                "plan_scanning": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.PortResult"
+                    }
+                },
+                "state": {
+                    "description": "0:成功 1:失败",
+                    "type": "integer"
+                }
+            }
+        },
+        "apiserver.GetPlanResultsReplay_JobResult": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.JobResult"
+                    }
+                }
+            }
+        },
+        "apiserver.RestartPlanReplay": {
+            "type": "object",
+            "properties": {
+                "plan_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiserver.RunningPlansReplay": {
+            "type": "object",
+            "properties": {
+                "plan_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "apiserver.StopPlanReplay": {
+            "type": "object",
+            "properties": {
+                "plan_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiserver.StoppedPlansReplay": {
+            "type": "object",
+            "properties": {
+                "plan_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "apiserver.status": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.HostDiscoveryOptions": {
+            "type": "object",
+            "required": [
+                "concurrency",
+                "count",
+                "rate_limit"
+            ],
+            "properties": {
+                "concurrency": {
+                    "description": "并发数",
+                    "type": "integer"
+                },
+                "count": {
+                    "description": "轮次",
+                    "type": "integer"
+                },
+                "format": {
+                    "description": "导出结果格式(csv,excel)",
+                    "type": "string"
+                },
+                "rate_limit": {
+                    "description": "限流",
+                    "type": "integer"
+                },
+                "timeout": {
+                    "description": "超时时间(0.5s, 1m)",
+                    "type": "string"
+                },
+                "use": {
+                    "description": "开启设备发现(探活)",
+                    "type": "boolean"
+                }
+            }
+        },
+        "types.JobOptions": {
+            "type": "object",
+            "required": [
+                "concurrency",
+                "count",
+                "name",
+                "rate_limit",
+                "template"
+            ],
+            "properties": {
+                "concurrency": {
+                    "description": "并发数",
+                    "type": "integer"
+                },
+                "count": {
+                    "description": "循环次数",
+                    "type": "integer"
+                },
+                "format": {
+                    "description": "输出格式",
+                    "type": "string"
+                },
+                "headless": {
+                    "description": "是否启用浏览器",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "任务名称",
+                    "type": "string"
+                },
+                "rate_limit": {
+                    "description": "限流",
+                    "type": "integer"
+                },
+                "template": {
+                    "description": "模板，支持单文件和目录",
+                    "type": "string"
+                },
+                "timeout": {
+                    "description": "超时时间",
+                    "type": "string"
+                }
+            }
+        },
+        "types.JobResult": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "extracted_results": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "host": {
+                    "type": "string"
+                },
+                "matched": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "string"
+                },
+                "scheme": {
+                    "type": "string"
+                },
+                "severity": {
+                    "type": "string"
+                },
+                "template_id": {
+                    "type": "string"
+                },
+                "template_name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.PingResult": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "os": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.PortResult": {
+            "type": "object",
+            "properties": {
+                "host_port": {
+                    "type": "string"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.PortScanningOptions": {
+            "type": "object",
+            "required": [
+                "concurrency",
+                "count",
+                "rate_limit"
+            ],
+            "properties": {
+                "concurrency": {
+                    "description": "并发数",
+                    "type": "integer"
+                },
+                "count": {
+                    "description": "轮次",
+                    "type": "integer"
+                },
+                "format": {
+                    "description": "导出结果格式(csv,excel)",
+                    "type": "string"
+                },
+                "ports": {
+                    "description": "扫描端口",
+                    "type": "string"
+                },
+                "rate_limit": {
+                    "description": "限流",
+                    "type": "integer"
+                },
+                "timeout": {
+                    "description": "超时时间(0.5s, 1m)",
+                    "type": "string"
+                },
+                "use": {
+                    "description": "开启端口扫描",
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}

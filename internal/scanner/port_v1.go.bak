@@ -1,0 +1,255 @@
+package scanner
+
+import (
+	"context"
+	"fmt"
+	"log/slog"
+	"net"
+	"path/filepath"
+	"strconv"
+	"sync"
+	"time"
+
+	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/export"
+	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/stage"
+	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/util"
+	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/internal/util/log"
+	"codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye/pkg/types"
+	"github.com/projectdiscovery/naabu/v2/pkg/result"
+	"github.com/projectdiscovery/naabu/v2/pkg/runner"
+	"github.com/samber/lo"
+	"github.com/schollz/progressbar/v3"
+	"github.com/spf13/cast"
+)
+
+var _ Scanner[[]string, []string] = (*portScannerV1)(nil)
+
+// portScannerV1 端口扫描器
+type portScannerV1 struct {
+	name      string
+	entryID   string
+	runner    *runner.Runner
+	targets   map[string]struct{}
+	c         context.Context
+	exporter  export.Exporter
+	logger    *slog.Logger
+	m         sync.Mutex
+	portSize  int64
+	total     int64
+	retries   int
+	resumeCfg *runner.ResumeCfg
+	bar       *progressbar.ProgressBar
+	callback  types.PortResultCallback
+	silent    bool
+	stage     *stage.Stage
+}
+
+// NewPortScanner 实例化扫描器
+func NewPortScannerV1(config *PortScannerConfig) (Scanner[[]string, []string], error) {
+	duration, err := time.ParseDuration(config.Timeout)
+	if err != nil {
+		return nil, fmt.Errorf("invalid port scanner timeout: %w", err)
+	}
+
+	scanner := &portScannerV1{
+		callback: config.ResultCallback,
+		silent:   config.Silent,
+		entryID:  config.EntryID,
+		stage:    config.Stage,
+	}
+
+	if scanner.silent {
+		scanner.logger = log.Must(log.NewLogger(log.WithSilent(true)))
+	} else {
+		scanner.logger = log.Must(log.NewLogger(log.WithStdout()))
+	}
+
+	scanner.name = portName
+
+	options := runner.Options{
+		ScanType:          runner.SynScan,
+		Threads:           config.Concurrency,
+		Rate:              config.RateLimit,
+		Timeout:           int(duration / time.Millisecond),
+		Retries:           config.Count,
+		OnResult:          scanner.onResult,
+		SkipHostDiscovery: true,
+		Silent:            true,
+		ResumeCfg:         runner.NewResumeCfg(),
+	}
+	scanner.retries = options.Retries
+	scanner.resumeCfg = options.ResumeCfg
+
+	switch config.Ports {
+	case "top100":
+		options.Ports = top100
+	case "top1000":
+		options.Ports = top1000
+	case "http":
+		options.Ports = httpPort
+	default:
+		options.Ports = config.Ports
+	}
+
+	switch config.Format {
+	case "csv":
+		exporter, err := export.NewCsvExporter(filepath.Join(config.Directory, config.EntryID, scanner.name))
+		if err != nil {
+			return nil, err
+		}
+		scanner.exporter = exporter
+	case "excel":
+		exporter, err := export.NewExcelExporter(filepath.Join(config.Directory, config.EntryID, scanner.name), 2)
+		if err != nil {
+			return nil, err
+		}
+		scanner.exporter = exporter
+	default:
+		return nil, ErrPortOuputSupport
+	}
+
+	naabuRunner, err := runner.NewRunner(&options)
+	if err != nil {
+		return nil, fmt.Errorf("create port scanner failed: %w", err)
+	}
+	scanner.runner = naabuRunner
+
+	ports, _ := util.ParsePortsList(options.Ports)
+	scanner.portSize = int64(len(ports))
+
+	return scanner, nil
+}
+
+func (sc *portScannerV1) onResult(hr *result.HostResult) {
+	for _, v := range hr.Ports {
+		hostPort := net.JoinHostPort(hr.IP, strconv.Itoa(v.Port))
+
+		sc.m.Lock()
+		_, contained := sc.targets[hostPort]
+		if !contained {
+			sc.targets[hostPort] = struct{}{}
+		}
+		sc.m.Unlock()
+
+		if !contained {
+			sc.exporter.Export(sc.c, []any{hr.IP, v.Port})
+		}
+	}
+}
+
+// Scan 扫描任务
+func (sc *portScannerV1) Scan(c context.Context, o *Options[[]string]) ([]string, error) {
+
+	sc.logger.InfoContext(c, "Running port scan")
+
+	// 开始扫描
+	results, err := sc.scan(c, o)
+	if err != nil {
+		return nil, err
+	}
+
+	sc.logger.InfoContext(c, "Port scan complete")
+
+	// 执行回调
+	sc.doCallback(c)
+
+	return results, nil
+}
+
+func (sc *portScannerV1) doCallback(c context.Context) error {
+	if sc.callback != nil {
+		results := make([]*types.PortResultItem, 0, len(sc.targets))
+		for target := range sc.targets {
+			ip, port, _ := net.SplitHostPort(target)
+			results = append(results, &types.PortResultItem{
+				EntryID:  sc.entryID,
+				IP:       ip,
+				Port:     cast.ToInt(port),
+				HostPort: target,
+			})
+		}
+		err := sc.callback(c, &types.PortResult{EntryID: sc.entryID, Items: results})
+		if err != nil {
+			return fmt.Errorf("port scanning callback failed: %w", err)
+		}
+	}
+	return nil
+}
+
+// scan 核心scan方法
+func (sc *portScannerV1) scan(c context.Context, o *Options[[]string]) ([]string, error) {
+	defer sc.exporter.Close()
+
+	sc.c = c
+	sc.targets = make(map[string]struct{}, 0)
+
+	// 添加扫描目标
+	for _, target := range o.Targets {
+		if util.IsHostPort(target) {
+			if _, contained := sc.targets[target]; !contained {
+				sc.targets[target] = struct{}{}
+			}
+			continue
+		}
+		if err := sc.runner.AddTarget(target); err != nil {
+			return nil, fmt.Errorf("scanner add target failed: %w", err)
+		}
+	}
+
+	// 打印title
+	sc.exporter.Export(c, []any{"主机", "端口"})
+
+	// 构建进度条
+	sc.total = sc.portSize * int64(len(o.Targets))
+	sc.bar = util.NewProgressbar(portName, int64(sc.total), sc.silent)
+
+	ok := make(chan struct{})
+	defer close(ok)
+	go sc.progress(c, ok)
+
+	select {
+	case <-c.Done():
+		return nil, context.Canceled
+	default:
+	}
+
+	err := sc.runner.RunEnumeration(c)
+	if err != nil {
+		return nil, fmt.Errorf("port scanning failed: %w", err)
+	}
+
+	select {
+	case <-c.Done():
+		return nil, context.Canceled
+	default:
+	}
+
+	return lo.Uniq(lo.Keys(sc.targets)), nil
+}
+
+func (sc *portScannerV1) progress(c context.Context, ok <-chan struct{}) {
+	defer sc.runner.Close()
+
+	ticker := time.NewTicker(10 * time.Millisecond)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-c.Done():
+			return
+		case <-ok:
+			sc.bar.Finish()
+			sc.stage.Put(types.StagePortScanning, 1)
+			return
+		case <-ticker.C:
+			sc.resumeCfg.RLock()
+			retry := sc.resumeCfg.Retry
+			index := sc.resumeCfg.Index
+			sc.resumeCfg.RUnlock()
+			if index == 0 {
+				continue
+			}
+			sc.bar.Set64((int64(retry)*int64(sc.total) + index) / int64(sc.retries))
+			sc.stage.Put(types.StagePortScanning, sc.bar.State().CurrentPercent)
+		}
+	}
+}

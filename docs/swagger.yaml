@@ -1,0 +1,374 @@
+basePath: /api/v1
+definitions:
+  apiserver.CreatePlanReplay:
+    properties:
+      plan_id:
+        type: string
+    type: object
+  apiserver.CreatePlanRequest:
+    properties:
+      host_discovery:
+        allOf:
+        - $ref: '#/definitions/types.HostDiscoveryOptions'
+        description: 在线检测
+      jobs:
+        description: 任务
+        items:
+          $ref: '#/definitions/types.JobOptions'
+        type: array
+      port_scanning:
+        allOf:
+        - $ref: '#/definitions/types.PortScanningOptions'
+        description: 端口扫描
+      targets:
+        description: 目标
+        items:
+          type: string
+        type: array
+    required:
+    - host_discovery
+    - port_scanning
+    type: object
+  apiserver.GetPlanResultsReplay:
+    properties:
+      host_discovery:
+        items:
+          $ref: '#/definitions/types.PingResult'
+        type: array
+      job_results:
+        items:
+          $ref: '#/definitions/apiserver.GetPlanResultsReplay_JobResult'
+        type: array
+      plan_id:
+        type: string
+      plan_scanning:
+        items:
+          $ref: '#/definitions/types.PortResult'
+        type: array
+      state:
+        description: 0:成功 1:失败
+        type: integer
+    type: object
+  apiserver.GetPlanResultsReplay_JobResult:
+    properties:
+      name:
+        type: string
+      results:
+        items:
+          $ref: '#/definitions/types.JobResult'
+        type: array
+    type: object
+  apiserver.RestartPlanReplay:
+    properties:
+      plan_id:
+        type: string
+    type: object
+  apiserver.RunningPlansReplay:
+    properties:
+      plan_ids:
+        items:
+          type: string
+        type: array
+    type: object
+  apiserver.StopPlanReplay:
+    properties:
+      plan_id:
+        type: string
+    type: object
+  apiserver.StoppedPlansReplay:
+    properties:
+      plan_ids:
+        items:
+          type: string
+        type: array
+    type: object
+  apiserver.status:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  types.HostDiscoveryOptions:
+    properties:
+      concurrency:
+        description: 并发数
+        type: integer
+      count:
+        description: 轮次
+        type: integer
+      format:
+        description: 导出结果格式(csv,excel)
+        type: string
+      rate_limit:
+        description: 限流
+        type: integer
+      timeout:
+        description: 超时时间(0.5s, 1m)
+        type: string
+      use:
+        description: 开启设备发现(探活)
+        type: boolean
+    required:
+    - concurrency
+    - count
+    - rate_limit
+    type: object
+  types.JobOptions:
+    properties:
+      concurrency:
+        description: 并发数
+        type: integer
+      count:
+        description: 循环次数
+        type: integer
+      format:
+        description: 输出格式
+        type: string
+      headless:
+        description: 是否启用浏览器
+        type: boolean
+      name:
+        description: 任务名称
+        type: string
+      rate_limit:
+        description: 限流
+        type: integer
+      template:
+        description: 模板，支持单文件和目录
+        type: string
+      timeout:
+        description: 超时时间
+        type: string
+    required:
+    - concurrency
+    - count
+    - name
+    - rate_limit
+    - template
+    type: object
+  types.JobResult:
+    properties:
+      description:
+        type: string
+      extracted_results:
+        items:
+          type: string
+        type: array
+      host:
+        type: string
+      matched:
+        type: string
+      path:
+        type: string
+      port:
+        type: string
+      scheme:
+        type: string
+      severity:
+        type: string
+      template_id:
+        type: string
+      template_name:
+        type: string
+      type:
+        type: string
+      url:
+        type: string
+    type: object
+  types.PingResult:
+    properties:
+      active:
+        type: boolean
+      ip:
+        type: string
+      os:
+        type: string
+    type: object
+  types.PortResult:
+    properties:
+      host_port:
+        type: string
+      ip:
+        type: string
+      port:
+        type: integer
+    type: object
+  types.PortScanningOptions:
+    properties:
+      concurrency:
+        description: 并发数
+        type: integer
+      count:
+        description: 轮次
+        type: integer
+      format:
+        description: 导出结果格式(csv,excel)
+        type: string
+      ports:
+        description: 扫描端口
+        type: string
+      rate_limit:
+        description: 限流
+        type: integer
+      timeout:
+        description: 超时时间(0.5s, 1m)
+        type: string
+      use:
+        description: 开启端口扫描
+        type: boolean
+    required:
+    - concurrency
+    - count
+    - rate_limit
+    type: object
+host: 127.0.0.1:9527
+info:
+  contact: {}
+  description: This is the API documentation for EagleEye.
+  title: EagleEye API
+  version: 0.2.0
+paths:
+  /plan:
+    post:
+      consumes:
+      - application/json
+      description: 创建计划
+      parameters:
+      - description: 计划
+        in: body
+        name: plan
+        required: true
+        schema:
+          $ref: '#/definitions/apiserver.CreatePlanRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiserver.CreatePlanReplay'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apiserver.status'
+      summary: 创建计划
+      tags:
+      - plans
+  /plan/{plan_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 停止计划
+      parameters:
+      - description: 计划ID
+        in: path
+        name: plan_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiserver.StopPlanReplay'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apiserver.status'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/apiserver.status'
+      summary: 停止计划
+      tags:
+      - plans
+    post:
+      consumes:
+      - application/json
+      description: 重启计划
+      parameters:
+      - description: 计划ID
+        in: path
+        name: plan_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiserver.RestartPlanReplay'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apiserver.status'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/apiserver.status'
+      summary: 重启计划
+      tags:
+      - plans
+  /plan/{plan_id}/results:
+    get:
+      consumes:
+      - application/json
+      description: 获取计划结果
+      parameters:
+      - description: 计划ID
+        in: path
+        name: plan_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiserver.GetPlanResultsReplay'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apiserver.status'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/apiserver.status'
+      summary: 获取计划结果
+      tags:
+      - plans
+  /plan/running:
+    get:
+      consumes:
+      - application/json
+      description: 获取运行中的计划
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiserver.RunningPlansReplay'
+      summary: 获取运行中的计划
+      tags:
+      - plans
+  /plan/stopped:
+    get:
+      consumes:
+      - application/json
+      description: 获取已停止的计划
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiserver.StoppedPlansReplay'
+      summary: 获取已停止的计划
+      tags:
+      - plans
+swagger: "2.0"

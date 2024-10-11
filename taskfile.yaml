@@ -1,0 +1,41 @@
+version: "3"
+silent: true
+
+tasks:
+  build:
+    vars:
+      BUILDTIME:
+        sh: powershell -command "Get-Date -Format 'yyyy-MM-dd HH:mm:ss'"
+      BUILDUSER:
+        sh: powershell -command "Write-Host $env:USERNAME"
+      BUILDHOST:
+        sh: powershell -command "Write-Host $env:COMPUTERNAME"
+      BUILDVERSION:
+        sh: powershell -command "Get-Content -Path ./version.ini"
+      BUILDBRANCH:
+        sh: powershell -command "git rev-parse --abbrev-ref HEAD"
+      BUILDCOMMIT:
+        sh: powershell -command "git rev-parse --short HEAD"
+      BUILDOS:
+        sh: powershell -command "go env GOOS"
+      BUILDARCH:
+        sh: powershell -command "go env GOARCH"
+      PROJECT: codeup.aliyun.com/66d825f8c06a2fdac7bbfe8c/eagleeye
+      LDFLAGS: -w -s -X '{{.PROJECT}}/internal/meta.BuildOS={{.BUILDOS}}' -X '{{.PROJECT}}/internal/meta.BuildArch={{.BUILDARCH}}' -X '{{.PROJECT}}/internal/meta.BuildCommit={{.BUILDCOMMIT}}' -X '{{.PROJECT}}/internal/meta.BuildBranch={{.BUILDBRANCH}}' -X '{{.PROJECT}}/internal/meta.BuildVer={{.BUILDVERSION}}' -X '{{.PROJECT}}/internal/meta.BuildTime={{.BUILDTIME}}' -X '{{.PROJECT}}/internal/meta.BuildUser={{.BUILDUSER}}' -X '{{.PROJECT}}/internal/meta.BuildHost={{.BUILDHOST}}'
+    cmds:
+      - CGO_ENABLED=1 go build -ldflags "{{.LDFLAGS}}" ./cmd/eagleeye.go
+  swagger:
+    cmds:
+      - go generate ./docs/gen.go
+  clean:
+    cmds:
+      - powershell -command "Remove-Item -Recurse -Path ./*.csv"
+      - powershell -command "Remove-Item -Recurse -Path ./*.xlsx"
+      - powershell -command "Remove-Item -Recurse -Path ./*.out"
+      - powershell -command "Remove-Item -Recurse -Path ./*.txt"
+      - powershell -command "Remove-Item -Recurse -Path ./eagleeye*"
+      - powershell -command "Remove-Item -Recurse -Path ./*.png"
+      - powershell -command "Remove-Item -Recurse -Path ./results"
+      - powershell -command "Remove-Item -Recurse -Path ./license.json"
+      - powershell -command "Remove-Item -Recurse -Path ./*.docx"
+      - powershell -command "Remove-Item -Recurse -Path ./reports"

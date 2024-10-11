@@ -1,0 +1,33 @@
+targets:
+  - 192.168.1.104:9080
+exclude_targets:
+  - 192.168.1.108
+mapping:
+  vuln: ./vm.demo.yaml
+monitor:
+  # use: true
+  interval: 1s
+host_discovery:
+  # use: true
+  timeout: 2s
+  count: 1
+  concurrency: 3000
+  rate_limit: 2000
+  format: csv
+port_scanning:
+  # use: true
+  timeout: 2s
+  count: 1
+  ports: http
+  concurrency: 3000
+  rate_limit: 2000
+  format: csv
+jobs:
+  - name: 资产扫描
+    headless: false
+    concurrency: 3000
+    rate_limit: 2000
+    format: console
+    timeout: 2s
+    count: 1
+    template: ./templates/test.yaml

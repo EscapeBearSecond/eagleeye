@@ -1,0 +1,60 @@
+package monitor
+
+import (
+	"context"
+	"fmt"
+	"sync/atomic"
+	"time"
+
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/pcap"
+)
+
+// initNetworkTraffic 网卡监控
+func (m *Monitor) initNetworkTraffic(deviceName string) error {
+	handle, err := pcap.OpenLive(deviceName, 1024, false, 0)
+	if err != nil {
+		return fmt.Errorf("can not open network device: %w", err)
+	}
+	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
+	packetSource.NoCopy = true
+
+	m.pc = packetSource
+
+	return nil
+}
+
+func (m *Monitor) handleNetworkTraffic(c context.Context) {
+	ticker := time.NewTicker(m.duration)
+	defer ticker.Stop()
+
+	var sum = &atomic.Uint64{}
+	for {
+		select {
+		case <-c.Done():
+			return
+		case <-ticker.C:
+			if m.logger != nil {
+				var sumDisplay string
+				if v := sum.Load(); v > 1024 {
+					sumDisplay = fmt.Sprintf("%.2fKB", float64(v)/1024)
+				} else if v > 1024*1024 {
+					sumDisplay = fmt.Sprintf("%.2fMB", float64(v)/1024/1024)
+				} else {
+					sumDisplay = fmt.Sprintf("%fB", float64(v))
+				}
+
+				m.logger.InfoContext(c, "Monitor Network Success",
+					"总负载量", sumDisplay,
+				)
+			}
+		case packet := <-m.pc.Packets():
+			if transportLayer := packet.TransportLayer(); transportLayer != nil {
+				if len(transportLayer.LayerPayload()) != 0 {
+					per := len(transportLayer.LayerPayload())
+					sum.Add(uint64(per))
+				}
+			}
+		}
+	}
+}
