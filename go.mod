@@ -1,4 +1,4 @@
-module github.com/EscapeBearSecond/eagleeye
+module github.com/EscapeBearSecond/falcon
 
 go 1.22
 

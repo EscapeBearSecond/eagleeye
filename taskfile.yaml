@@ -20,7 +20,7 @@ tasks:
         sh: powershell -command "go env GOOS"
       BUILDARCH:
         sh: powershell -command "go env GOARCH"
-      PROJECT: github.com/EscapeBearSecond/eagleeye
+      PROJECT: github.com/EscapeBearSecond/falcon
       LDFLAGS: -w -s -X '{{.PROJECT}}/internal/meta.BuildOS={{.BUILDOS}}' -X '{{.PROJECT}}/internal/meta.BuildArch={{.BUILDARCH}}' -X '{{.PROJECT}}/internal/meta.BuildCommit={{.BUILDCOMMIT}}' -X '{{.PROJECT}}/internal/meta.BuildBranch={{.BUILDBRANCH}}' -X '{{.PROJECT}}/internal/meta.BuildVer={{.BUILDVERSION}}' -X '{{.PROJECT}}/internal/meta.BuildTime={{.BUILDTIME}}' -X '{{.PROJECT}}/internal/meta.BuildUser={{.BUILDUSER}}' -X '{{.PROJECT}}/internal/meta.BuildHost={{.BUILDHOST}}'
     cmds:
       - CGO_ENABLED=1 go build -ldflags "{{.LDFLAGS}}" ./cmd/eagleeye.go

@@ -32,7 +32,7 @@ Or download a pre-compiled binary from the [release page](https://github.com/swa
 ## Download and get help
 
 ```bash
-go install github.com/EscapeBearSecond/eagleeye
+go install github.com/EscapeBearSecond/falcon
 
 eagleeye --help
 
@@ -99,7 +99,7 @@ Use "eagleeye [command] --help" for more information about a command.
 ### Linux/MacOS
 
 ```bash
-git clone http://github.com/EscapeBearSecond/eagleeye.git
+git clone http://github.com/EscapeBearSecond/falcon.git
 
 cd eagleeye
 
@@ -111,7 +111,7 @@ make
 ### Windows
 
 ```powershell
-git clone http://github.com/EscapeBearSecond/eagleeye.git
+git clone http://github.com/EscapeBearSecond/falcon.git
 
 cd eagleeye
 
@@ -252,7 +252,7 @@ jobs:
 go env -w GOPRIVATE="47.103.136.241"
 go env -w GOINSECURE="47.103.136.241"
 
-go get -u github.com/EscapeBearSecond/eagleeye@dev
+go get -u github.com/EscapeBearSecond/falcon@dev
 ```
 
 ## Example

@@ -7,7 +7,7 @@ BUILDCOMMIT=$(shell git rev-parse --short HEAD)
 BUILDOS=$(shell go env GOOS)
 BUILDARCH=$(shell go env GOARCH)
 
-PROJECT=github.com/EscapeBearSecond/eagleeye
+PROJECT=github.com/EscapeBearSecond/falcon
 
 go build  -ldflags="-w -s -X 'github.com/EscapeBearSecond/curescan/server/core/meta.BuildVer=$(cat version.ini)'" -o curescan .
 
