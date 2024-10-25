@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/util"
+	"github.com/EscapeBearSecond/falcon/internal/util"
 	"github.com/samber/lo"
 	"golang.org/x/sync/errgroup"
 )

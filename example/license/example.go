@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/EscapeBearSecond/eagleeye/pkg/license"
+	"github.com/EscapeBearSecond/falcon/pkg/license"
 )
 
 func main() {

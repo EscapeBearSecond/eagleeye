@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/util"
+	"github.com/EscapeBearSecond/falcon/internal/util"
 	"github.com/xuri/excelize/v2"
 )
 

@@ -1,9 +1,9 @@
 package engine
 
 import (
-	"github.com/EscapeBearSecond/eagleeye/internal/job"
-	"github.com/EscapeBearSecond/eagleeye/internal/scanner"
-	"github.com/EscapeBearSecond/eagleeye/internal/stage"
+	"github.com/EscapeBearSecond/falcon/internal/job"
+	"github.com/EscapeBearSecond/falcon/internal/scanner"
+	"github.com/EscapeBearSecond/falcon/internal/stage"
 )
 
 type Option func(*Engine)

@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/util"
+	"github.com/EscapeBearSecond/falcon/internal/util"
 	"github.com/stretchr/testify/assert"
 	"github.com/xuri/excelize/v2"
 )

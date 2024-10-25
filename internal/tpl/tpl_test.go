@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/global"
+	"github.com/EscapeBearSecond/falcon/internal/global"
 	"github.com/projectdiscovery/nuclei/v3/pkg/catalog/disk"
 	"github.com/stretchr/testify/assert"
 )

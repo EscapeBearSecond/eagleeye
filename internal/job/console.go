@@ -6,7 +6,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 	"github.com/pterm/pterm"
 	"github.com/samber/lo"
 )

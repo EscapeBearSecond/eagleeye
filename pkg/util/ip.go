@@ -1,6 +1,6 @@
 package util
 
-import "github.com/EscapeBearSecond/eagleeye/internal/util"
+import "github.com/EscapeBearSecond/falcon/internal/util"
 
 func IsIP(str string) bool {
 	return util.IsIP(str)

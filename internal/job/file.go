@@ -6,8 +6,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/export"
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/internal/export"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 	"github.com/samber/lo"
 )
 

@@ -6,7 +6,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/mapper"
+	"github.com/EscapeBearSecond/falcon/internal/mapper"
 	"github.com/hashicorp/go-version"
 	"gopkg.in/yaml.v3"
 )

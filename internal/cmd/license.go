@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/license"
-	"github.com/EscapeBearSecond/eagleeye/internal/util"
+	"github.com/EscapeBearSecond/falcon/internal/license"
+	"github.com/EscapeBearSecond/falcon/internal/util"
 	"github.com/spf13/cobra"
 )
 

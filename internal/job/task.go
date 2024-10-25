@@ -3,7 +3,7 @@ package job
 import (
 	"context"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/tpl"
+	"github.com/EscapeBearSecond/falcon/internal/tpl"
 )
 
 type contextKey string

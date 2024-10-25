@@ -5,9 +5,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/EscapeBearSecond/eagleeye/pkg/report"
-	eagleeye "github.com/EscapeBearSecond/eagleeye/pkg/sdk"
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/pkg/report"
+	eagleeye "github.com/EscapeBearSecond/falcon/pkg/sdk"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 )
 
 func main() {

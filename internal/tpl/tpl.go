@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 	"github.com/projectdiscovery/nuclei/v3/pkg/protocols"
 	"github.com/projectdiscovery/nuclei/v3/pkg/templates"
 )

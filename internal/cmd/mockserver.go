@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/EscapeBearSecond/eagleeye/internal/mockserver"
+	"github.com/EscapeBearSecond/falcon/internal/mockserver"
 	"github.com/spf13/cobra"
 )
 

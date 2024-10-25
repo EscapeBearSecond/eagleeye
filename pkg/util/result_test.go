@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/xuri/excelize/v2"
 )

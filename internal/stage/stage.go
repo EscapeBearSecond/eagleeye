@@ -3,7 +3,7 @@ package stage
 import (
 	"sync"
 
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 )
 
 type Manager struct {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 )
 
 var (

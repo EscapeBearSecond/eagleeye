@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/EscapeBearSecond/eagleeye/internal/meta"
+	"github.com/EscapeBearSecond/falcon/internal/meta"
 	"github.com/spf13/cobra"
 )
 

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/export"
-	"github.com/EscapeBearSecond/eagleeye/pkg/report"
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
-	"github.com/EscapeBearSecond/eagleeye/pkg/util"
+	"github.com/EscapeBearSecond/falcon/internal/export"
+	"github.com/EscapeBearSecond/falcon/pkg/report"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
+	"github.com/EscapeBearSecond/falcon/pkg/util"
 	"github.com/rs/xid"
 	"github.com/spf13/cobra"
 )

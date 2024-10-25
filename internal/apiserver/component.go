@@ -3,8 +3,8 @@ package apiserver
 import (
 	"log/slog"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/util/log"
-	eagleeye "github.com/EscapeBearSecond/eagleeye/pkg/sdk"
+	"github.com/EscapeBearSecond/falcon/internal/util/log"
+	eagleeye "github.com/EscapeBearSecond/falcon/pkg/sdk"
 )
 
 var (

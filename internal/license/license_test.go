@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/util"
+	"github.com/EscapeBearSecond/falcon/internal/util"
 	"github.com/rs/xid"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v3"

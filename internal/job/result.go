@@ -3,8 +3,8 @@ package job
 import (
 	"sync"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/global"
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/internal/global"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 )
 
 // resultPool 结果对象池

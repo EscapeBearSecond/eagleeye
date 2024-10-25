@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/EscapeBearSecond/eagleeye/internal/cmd"
+	"github.com/EscapeBearSecond/falcon/internal/cmd"
 )
 
 func main() {

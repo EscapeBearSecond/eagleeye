@@ -3,9 +3,9 @@ package job
 import (
 	"log/slog"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/mapper/vuln"
-	"github.com/EscapeBearSecond/eagleeye/internal/stage"
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/internal/mapper/vuln"
+	"github.com/EscapeBearSecond/falcon/internal/stage"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 )
 
 type Option func(*Job)

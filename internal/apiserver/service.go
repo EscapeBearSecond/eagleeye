@@ -3,8 +3,8 @@ package apiserver
 import (
 	"context"
 
-	eagleeye "github.com/EscapeBearSecond/eagleeye/pkg/sdk"
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	eagleeye "github.com/EscapeBearSecond/falcon/pkg/sdk"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 )
 
 type PlanService struct{}

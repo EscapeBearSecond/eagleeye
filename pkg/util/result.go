@@ -7,8 +7,8 @@ import (
 	"net"
 	"strings"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/util"
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/internal/util"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 	"github.com/samber/lo"
 	"github.com/spf13/cast"
 	"github.com/xuri/excelize/v2"

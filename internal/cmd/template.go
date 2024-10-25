@@ -3,7 +3,7 @@ package cmd
 import (
 	"errors"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/tvalidator"
+	"github.com/EscapeBearSecond/falcon/internal/tvalidator"
 	"github.com/spf13/cobra"
 )
 

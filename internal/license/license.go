@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/util"
-	"github.com/EscapeBearSecond/eagleeye/internal/util/sign"
+	"github.com/EscapeBearSecond/falcon/internal/util"
+	"github.com/EscapeBearSecond/falcon/internal/util/sign"
 	"github.com/jinzhu/copier"
 	"github.com/rs/xid"
 	"github.com/samber/lo"

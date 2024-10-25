@@ -3,7 +3,7 @@ package flag
 import (
 	"testing"
 
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 	"github.com/stretchr/testify/assert"
 )
 

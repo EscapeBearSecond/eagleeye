@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/apiserver"
+	"github.com/EscapeBearSecond/falcon/internal/apiserver"
 	"github.com/spf13/cobra"
 )
 

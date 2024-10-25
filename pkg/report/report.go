@@ -14,8 +14,8 @@ import (
 
 	"slices"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/util"
-	"github.com/EscapeBearSecond/eagleeye/pkg/types"
+	"github.com/EscapeBearSecond/falcon/internal/util"
+	"github.com/EscapeBearSecond/falcon/pkg/types"
 	"github.com/golang/freetype/truetype"
 	"github.com/nguyenthenguyen/docx"
 	"github.com/samber/lo"

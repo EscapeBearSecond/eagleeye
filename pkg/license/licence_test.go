@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/license"
+	"github.com/EscapeBearSecond/falcon/internal/license"
 	"github.com/stretchr/testify/assert"
 )
 

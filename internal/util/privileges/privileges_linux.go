@@ -6,7 +6,7 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/util/israce"
+	"github.com/EscapeBearSecond/falcon/internal/util/israce"
 	"golang.org/x/sys/unix"
 )
 

@@ -1,6 +1,6 @@
 package mapper
 
-import "github.com/EscapeBearSecond/eagleeye/pkg/types"
+import "github.com/EscapeBearSecond/falcon/pkg/types"
 
 type Src struct {
 	TemplateID string `yaml:"template_id"`

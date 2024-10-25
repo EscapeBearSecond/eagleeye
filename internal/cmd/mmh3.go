@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/EscapeBearSecond/eagleeye/internal/mmh3"
+	"github.com/EscapeBearSecond/falcon/internal/mmh3"
 	"github.com/spf13/cobra"
 )
 
